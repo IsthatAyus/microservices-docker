@@ -1,0 +1,15 @@
+Dependencies and Generated Files
+
+node_modules/
+npm-debug.log
+.DS_Store
+
+Docker/Database specific
+
+This volume contains your actual MongoDB data and should not be uploaded
+
+mongo-data/
+
+Environment Variables and Secrets (if you use .env files)
+
+.env

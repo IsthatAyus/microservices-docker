@@ -1,0 +1,71 @@
+services:
+  mongodb:
+    image: mongo:latest
+    container_name: mongodb
+    volumes:
+      - mongo-data:/data/db
+    restart: always
+    healthcheck:
+      test: ["CMD", "mongosh", "--eval", "db.adminCommand('ping')"]
+      interval: 10s
+      timeout: 10s
+      retries: 10
+      start_period: 30s
+
+  auth:
+    build:
+      context: ./auth-service
+    container_name: auth-service-c
+    ports:
+      - "3000:3000"
+    environment:
+      DB_HOST: mongodb
+      PORT: 3000
+    depends_on:
+      mongodb:
+        condition: service_healthy
+
+  product:
+    build:
+      context: ./product-service
+    container_name: product-service-c
+    ports:
+      - "3001:3001"
+    environment:
+      AUTH_SERVICE_URL: http://auth:3000
+      PORT: 3001
+    depends_on:
+      mongodb:
+        condition: service_healthy
+      auth:
+        condition: service_started
+
+  order:
+    build:
+      context: ./order-service
+    container_name: order-service-c
+    ports:
+      - "3002:3002"
+    environment:
+      PRODUCT_SERVICE_URL: http://product:3001
+      PORT: 3002
+    depends_on:
+      mongodb:
+        condition: service_healthy
+      product:
+        condition: service_started
+
+  nginx:
+    image: nginx:latest
+    container_name: nginx-reverse-proxy
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+    depends_on:
+      - auth
+      - product
+      - order
+
+volumes:
+  mongo-data:
