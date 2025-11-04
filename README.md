@@ -282,8 +282,9 @@ docker image prune
 # View networks
 docker network ls
 
-# Inspect network
-docker network inspect microservices-docker_microservices-network
+# Inspect network (replace with your actual network name from 'docker network ls')
+docker network inspect <network_name>
+# Example: docker network inspect microservices-docker_microservices-network
 ```
 
 ### Docker Compose Commands
@@ -333,8 +334,8 @@ docker-compose ps
 
 **Cannot connect to services**
 ```bash
-# Verify network connectivity
-docker network inspect microservices-docker_microservices-network
+# Verify network connectivity (use your network name from 'docker network ls')
+docker network inspect <network_name>
 
 # Restart all services
 docker-compose restart
