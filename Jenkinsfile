@@ -26,7 +26,7 @@ pipeline {
         stage('Run Containers') {
             steps {
                 sh '''
-                docker rm -f auth-service-c product-service-c order-service-c mongodb  nginx-reverse-proxy || true
+                docker rm -f auth-service-c product-service-c order-service-c mongodb nginx-reverse-proxy || true
                 docker compose down --remove-orphans || true
                 docker compose up -d
                 '''
@@ -47,9 +47,11 @@ pipeline {
             steps {
                 sh '''
                 echo "$DOCKERHUB_CREDENTIALS_PSW" | docker login -u "$DOCKERHUB_CREDENTIALS_USR" --password-stdin
-                docker tag auth-service $DOCKERHUB_REPO:auth
-                docker tag product-service $DOCKERHUB_REPO:product
-                docker tag order-service $DOCKERHUB_REPO:order
+
+                docker tag test_pipeline-auth $DOCKERHUB_REPO:auth
+                docker tag test_pipeline-product $DOCKERHUB_REPO:product
+                docker tag test_pipeline-order $DOCKERHUB_REPO:order
+
                 docker push $DOCKERHUB_REPO:auth
                 docker push $DOCKERHUB_REPO:product
                 docker push $DOCKERHUB_REPO:order
@@ -59,7 +61,10 @@ pipeline {
 
         stage('Clean Up') {
             steps {
-                sh 'docker compose down'
+                sh '''
+                docker compose down -v
+                docker system prune -af || true
+                '''
             }
         }
     }
