@@ -2,6 +2,7 @@ pipeline {
     agent any
 
     environment {
+        DOCKERHUB_USER = 'ayushshrestha42460'
         DOCKERHUB_CREDENTIALS = credentials('dockerhub-credentials')  // set this in Jenkins
         DOCKERHUB_REPO = 'ayushshrestha/multi-service-app'
     }
