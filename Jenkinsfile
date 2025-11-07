@@ -36,9 +36,9 @@ pipeline {
         stage('Test Services') {
             steps {
                 sh '''
-                curl -f http://localhost:8080/auth/ || exit 1
-                curl -f http://localhost:8080/product/ || exit 1
-                curl -f http://localhost:8080/order/ || exit 1
+                curl -f http://localhost/auth/ || exit 1
+                curl -f http://localhost/product/ || exit 1
+                curl -f http://localhost/order/ || exit 1
                 '''
             }
         }
