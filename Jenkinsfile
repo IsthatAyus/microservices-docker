@@ -37,8 +37,8 @@ pipeline {
             steps {
                 sh '''
                 curl -f http://localhost:8080/auth/ || exit 1
-                curl -f http://localhost:8081/product/ || exit 1
-                curl -f http://localhost:8082/order/ || exit 1
+                curl -f http://localhost:8080/product/ || exit 1
+                curl -f http://localhost:8080/order/ || exit 1
                 '''
             }
         }
