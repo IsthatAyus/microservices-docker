@@ -26,7 +26,7 @@ pipeline {
         stage('Run Containers') {
             steps {
                 sh '''
-                docker rm -f auth-service-c product-service-c order-service-c mongodb || true
+                docker rm -f auth-service-c product-service-c order-service-c mongodb  nginx-reverse-proxy || true
                 docker compose down --remove-orphans || true
                 docker compose up -d
                 '''
