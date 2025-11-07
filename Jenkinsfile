@@ -25,6 +25,7 @@ pipeline {
         stage('Run Containers') {
             steps {
                 sh '''
+                docker compose down --remove-orphans || true
                 docker compose up -d
                 '''
             }
