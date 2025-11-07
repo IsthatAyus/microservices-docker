@@ -3,8 +3,7 @@ pipeline {
 
     environment {
         DOCKERHUB_USER = 'ayushshrestha42460'
-        DOCKERHUB_CREDENTIALS = credentials('docker-credentials')  // set this in Jenkins
-        DOCKERHUB_REPO = 'ayushshrestha/multi-service-app'
+        DOCKERHUB_CREDENTIALS = credentials('docker-credentials')
     }
 
     stages {
