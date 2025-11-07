@@ -28,6 +28,7 @@ pipeline {
                 docker rm -f auth-service-c || true
                 docker rm -f product-service-c || true
                 docker rm -f order-service-c || true
+                docker rm -f mongodb || true
                 docker compose down --remove-orphans || true
                 docker compose up -d
                 '''
