@@ -3,6 +3,7 @@ pipeline {
 
     environment {
         DOCKERHUB_USER = 'ayushshrestha42460'
+        DOCKERHUB_REPO = 'ayushshrestha42460/microservices'
         DOCKERHUB_CREDENTIALS = credentials('docker-credentials')
     }
 
@@ -25,10 +26,7 @@ pipeline {
         stage('Run Containers') {
             steps {
                 sh '''
-                docker rm -f auth-service-c || true
-                docker rm -f product-service-c || true
-                docker rm -f order-service-c || true
-                docker rm -f mongodb || true
+                docker rm -f auth-service-c product-service-c order-service-c mongodb || true
                 docker compose down --remove-orphans || true
                 docker compose up -d
                 '''
@@ -38,9 +36,9 @@ pipeline {
         stage('Test Services') {
             steps {
                 sh '''
-                curl -f http://localhost/auth/ || exit 1
-                curl -f http://localhost/product/ || exit 1
-                curl -f http://localhost/order/ || exit 1
+                curl -f http://localhost:8080/auth/ || exit 1
+                curl -f http://localhost:8081/product/ || exit 1
+                curl -f http://localhost:8082/order/ || exit 1
                 '''
             }
         }
@@ -61,9 +59,7 @@ pipeline {
 
         stage('Clean Up') {
             steps {
-                sh '''
-                docker compose down
-                '''
+                sh 'docker compose down'
             }
         }
     }
